@@ -1,0 +1,34 @@
+import requests
+import random
+
+
+# usar a API randomuser para ger os usuários e aproveitei e coloquei domínios específicos, assim fica mais divertido
+def gerar_usuario():
+    url = "https://randomuser.me/api/"
+    dominios = ['gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'icloud.com']
+
+    try:
+        resposta = requests.get(url)
+        resposta.raise_for_status()
+        dados = resposta.json()
+
+        usuario = dados['results'][0]
+        nome = usuario['name']['first']
+        sobrenome = usuario['name']['last']
+        pais = usuario['location']['country']
+
+        # gerar email com domínio aleatório
+        dominio = random.choice(dominios)
+        nome_email = f"{nome}.{sobrenome}".lower().replace(" ", "")
+        email = f"{nome_email}@{dominio}"
+
+        print("=== Perfil de Usuário Aleatório ===")
+        print(f"Nome: {nome} {sobrenome}")
+        print(f"Email: {email}")
+        print(f"País: {pais}")
+
+    except requests.exceptions.RequestException as erro:
+        print("Erro ao conectar com a API:", erro)
+
+# executar função
+gerar_usuario()
