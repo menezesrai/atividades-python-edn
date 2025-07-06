@@ -1,0 +1,41 @@
+import requests
+from datetime import datetime
+
+
+# chamar API 
+def consultar_cotacao(moeda):
+    url = f"https://economia.awesomeapi.com.br/json/last/{moeda}-BRL"
+
+    try:
+        resposta = requests.get(url)
+        resposta.raise_for_status()
+        dados = resposta.json()
+
+        chave = f"{moeda}BRL"
+
+        #failsafe
+        if chave not in dados:
+            print("Moeda não encontrada. Verifique o código informado.")
+            return
+
+        cotacao = dados[chave]
+
+        nome = cotacao['name']
+        valor_atual = float(cotacao['bid'])
+        maximo = float(cotacao['high'])
+        minimo = float(cotacao['low'])
+        timestamp = int(cotacao['timestamp'])
+        data_hora = datetime.fromtimestamp(timestamp).strftime("%d/%m/%Y %H:%M:%S")
+
+        print(f"\n=== Cotação de {nome} ===")
+        print(f"Valor atual: R$ {valor_atual:.2f}")
+        print(f"Valor máximo do dia: R$ {maximo:.2f}")
+        print(f"Valor mínimo do dia: R$ {minimo:.2f}")
+        print(f"Última atualização: {data_hora}")
+
+    except requests.exceptions.RequestException as erro:
+        print("Erro ao acessar a API:", erro)
+
+# input do usuário
+moeda = input("Digite o código da moeda (ex: USD, EUR, GBP): ").upper().strip()
+consultar_cotacao(moeda)
