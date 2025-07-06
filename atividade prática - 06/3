@@ -1,0 +1,36 @@
+import requests
+
+def consultar_cep(cep):
+    url = f"https://viacep.com.br/ws/{cep}/json/"
+
+    try:
+        resposta = requests.get(url)
+        resposta.raise_for_status()
+        dados = resposta.json()
+
+        if "erro" in dados:
+            print("CEP não encontrado. Verifique se digitou corretamente.")
+            return
+
+        logradouro = dados.get("logradouro", "Não disponível")
+        bairro = dados.get("bairro", "Não disponível")
+        cidade = dados.get("localidade", "Não disponível")
+        estado = dados.get("uf", "Não disponível")
+
+        print("\n=== Endereço Encontrado ===")
+        print(f"Logradouro: {logradouro}")
+        print(f"Bairro: {bairro}")
+        print(f"Cidade: {cidade}")
+        print(f"Estado: {estado}")
+
+    except requests.exceptions.RequestException as erro:
+        print("Erro ao acessar a API ViaCEP:", erro)
+
+# input do usuário
+cep = input("Digite o CEP (somente números): ").strip()
+
+# validação simples
+if len(cep) == 8 and cep.isdigit():
+    consultar_cep(cep)
+else:
+    print("CEP inválido. Você não digitou 8 números.")
