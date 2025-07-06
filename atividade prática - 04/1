@@ -1,0 +1,43 @@
+def calcular():
+    while True:
+        try:
+            # input primeiro número
+            num1 = float(input("Digite o primeiro número: "))
+            
+            # input operação
+            operacao = input("Digite a operação (+, -, *, /): ").strip()
+            if operacao not in ['+', '-', '*', '/']:
+                raise ValueError("Operação inválida. Use apenas +, -, * ou /.")
+            
+            # input segundo número
+            num2 = float(input("Digite o segundo número: "))
+
+            # failsafe divisão por zero
+            if operacao == '/' and num2 == 0:
+                raise ZeroDivisionError("Divisão por zero não é permitida.")
+
+            # calcular
+            if operacao == '+':
+                resultado = num1 + num2
+            elif operacao == '-':
+                resultado = num1 - num2
+            elif operacao == '*':
+                resultado = num1 * num2
+            elif operacao == '/':
+                resultado = num1 / num2
+
+            # exibe o resultado e encerra
+            print(f"\nResultado: {num1} {operacao} {num2} = {resultado}")
+            break
+
+        except ValueError as ve:
+            print(f"Erro: {ve}\nTente novamente.\n")
+
+        except ZeroDivisionError as ze:
+            print(f"Erro: {ze}\nTente novamente.\n")
+
+        except Exception as erro:
+            print(f"Ocorreu um erro inesperado: {erro}\nTente novamente.\n")
+
+# executar tudo
+calcular()
