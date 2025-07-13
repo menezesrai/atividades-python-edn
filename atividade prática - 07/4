@@ -1,0 +1,30 @@
+import json
+
+# solicitar os dados
+nome = input("Digite o nome: ")
+idade = input("Digite a idade: ")
+cidade = input("Digite a cidade: ")
+
+# criar uma database com os dados
+pessoa = {
+    "nome": nome,
+    "idade": idade,
+    "cidade": cidade
+}
+
+with open("pessoa.json", "w") as arquivo_json:
+    json.dump(pessoa, arquivo_json, indent=4)
+
+print("\nDados salvos no arquivo 'pessoa.json'.")
+
+# ler e exibir os dados
+with open("pessoa.json", "r") as arquivo_json:
+    dados_lidos = json.load(arquivo_json)
+
+print("\nDados lidos do arquivo JSON:")
+for chave, valor in dados_lidos.items():
+    print(f"{chave.capitalize()}: {valor}")
+
+
+
+# não tenho certeza se nesse era necessário usar o arquivo csv de antes? Acredito que assim funcione também.

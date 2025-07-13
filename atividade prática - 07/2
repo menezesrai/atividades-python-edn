@@ -1,0 +1,26 @@
+import csv
+
+# definir o nome do arquivo
+nome_arquivo = 'pessoas.csv'
+
+
+with open(nome_arquivo, mode='w', newline='') as arquivo_csv:
+    escritor = csv.writer(arquivo_csv)
+    escritor.writerow(["Nome", "Idade", "Cidade"])
+
+# loop para coletar os dados que vão no CSV
+while True:
+    nome = input("Digite o nome: ")
+    idade = input("Digite a idade: ")
+    cidade = input("Digite a cidade: ")
+
+    # salvar os dados no csv
+    with open(nome_arquivo, mode='a', newline='') as arquivo_csv:
+        escritor = csv.writer(arquivo_csv)
+        escritor.writerow([nome, idade, cidade])
+
+    continuar = input("Deseja adicionar outra pessoa? (s/n): ")
+    if continuar.lower() != 's':
+        break
+
+print(f"\nArquivo '{nome_arquivo}' criado com os dados inseridos!")

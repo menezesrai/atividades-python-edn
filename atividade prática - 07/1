@@ -1,0 +1,21 @@
+import re
+import statistics
+
+# script para ler um arquivo inventado de log(não tenho certeza se era necessário usar um arquivo especifico/real, peço perdão se for o caso, professor.)
+with open('log_treinamento.txt', 'r') as arquivo:
+    linhas = arquivo.readlines()
+
+# tentar extrair o tempo de execução usando regex
+tempos = []
+for linha in linhas:
+    match = re.search(r"Tempo de execução: ([\d.]+)", linha)
+    if match:
+        tempos.append(float(match.group(1)))
+
+if tempos:
+    media = statistics.mean(tempos)
+    desvio = statistics.stdev(tempos)
+    print(f"Média: {media:.2f} segundos")
+    print(f"Desvio padrão: {desvio:.2f} segundos")
+else:
+    print("Não há informação sobre o tempo de execução no arquivo")
