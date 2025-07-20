@@ -1,0 +1,43 @@
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
+import warnings
+warnings.filterwarnings("ignore")  
+
+
+dados = load_breast_cancer()
+X = dados.data
+y = dados.target
+
+#dividir o treino
+X_treino, X_teste, y_treino, y_teste = train_test_split(X, y, test_size=0.3, random_state=42)
+
+
+modelo = RandomForestClassifier(random_state=42)
+modelo.fit(X_treino, y_treino)
+
+
+y_pred = modelo.predict(X_teste)
+y_proba = modelo.predict_proba(X_teste)[:, 1] 
+
+
+acuracia = accuracy_score(y_teste, y_pred)
+precisao = precision_score(y_teste, y_pred)
+revocacao = recall_score(y_teste, y_pred)
+f1 = f1_score(y_teste, y_pred)
+roc_auc = roc_auc_score(y_teste, y_proba)
+
+
+print("==== MÉTRICAS DE CLASSIFICAÇÃO ====\n")
+print(f"Acurácia : {acuracia:.2f}")
+print(f"Precisão : {precisao:.2f}")
+print(f"Recall   : {revocacao:.2f}")
+print(f"F1-Score : {f1:.2f}")
+print(f"AUC-ROC  : {roc_auc:.2f}")
+
+
+print("\n==== INTERPRETAÇÃO ====")
+print("Este modelo apresenta bom desempenho geral.")
+print("- Recall é importante pois indica quantos casos positivos reais foram corretamente identificados (benignos).")
+print("- AUC-ROC mostra boa separação entre classes, útil em contextos médicos.")
